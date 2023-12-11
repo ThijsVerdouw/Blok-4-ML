@@ -1,11 +1,10 @@
 import downloadData
 from loguru import logger 
-from mltrainer.preprocessors import BasePreprocessor
 import torch
 from torch import nn
-from loguru import logger
-import torch.optim as optim
+  import torch.optim as optim
 from torchsummary import summary
+from mltrainer.preprocessors import BasePreprocessor
 from mltrainer import metrics
 from mltrainer import TrainerSettings, ReportTypes, Trainer
 from pathlib import Path
@@ -20,9 +19,11 @@ class NeuralNetwork(nn.Module):
         Basic neural network with flatten -> 3 hidden layers
         """
         super(NeuralNetwork, self).__init__()
-        self.flatten = nn.Flatten()
+        # images are not 2d data, and linear regression requires 2d data.
+        # That's why flatten is here.
+        self.flatten = nn.Flatten() 
         self.linear_relu_stack = nn.Sequential(
-            nn.Linear(28*28, 512),
+            nn.Linear(786, 512),
             nn.ReLU(),
             nn.Linear(512, 256),
             nn.ReLU(),
@@ -31,10 +32,13 @@ class NeuralNetwork(nn.Module):
 
     def forward(self, x):
         """
-        Don't really get why this is here.
-        But it ensures the layers talk to each other... I think.
+        This runs the neural network described above.
+        This one does the following:
+        1. flatten the pictures
+        2. run the linear layers
+        3. Return logits (recommendations, sort of)
         """
-        x = self.flatten(x) # not sure why this is here though...
+        x = self.flatten(x) 
         logits = self.linear_relu_stack(x)
         return logits
 

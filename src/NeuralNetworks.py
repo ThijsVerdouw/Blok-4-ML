@@ -11,38 +11,38 @@ class CNN(nn.Module):
         super().__init__()
         self.in_channels = input_size[1]
         self.input_size = input_size
-        self.expansion = 2
+        self.expansion = 4
 
-        if True == False:
-            self.convolutions = nn.Sequential(
-                settings.dropout,
-                nn.Conv2d(self.in_channels, self.in_channels * self.expansion, kernel_size=7, stride=1, padding=1),
-                nn.ReLU(),
-                nn.MaxPool2d(kernel_size=2),
-                # nn.AvgPool2d(kernel_size=2),
-                nn.Conv2d(self.in_channels * self.expansion, self.in_channels * self.expansion, kernel_size=5, stride=1, padding=0),
-                nn.ReLU(),
-                # nn.AvgPool2d(kernel_size=2),
-                nn.MaxPool2d(kernel_size=2),
-                nn.Conv2d(self.in_channels * self.expansion, self.in_channels * self.expansion, kernel_size=3, stride=1, padding=0),
-                nn.ReLU(),
-                # nn.MaxPool2d(kernel_size=1), #this layer is a pseudo duplicate I think, as the main model uses an avgpool to slap it all down.
-            )
-        else: 
-            self.convolutions = nn.Sequential(
-                settings.dropout,
-                nn.Conv2d(self.in_channels, self.in_channels * self.expansion, kernel_size=3, stride=1, padding=0),
-                nn.ReLU(),
-                nn.MaxPool2d(kernel_size=2),
-                # nn.AvgPool2d(kernel_size=2),
-                nn.Conv2d(self.in_channels * self.expansion, self.in_channels * self.expansion, kernel_size=4, stride=1, padding=0),
-                nn.ReLU(),
-                # nn.AvgPool2d(kernel_size=2),
-                nn.MaxPool2d(kernel_size=2),
-                nn.Conv2d(self.in_channels * self.expansion, self.in_channels * self.expansion, kernel_size=5, stride=1, padding=0),
-                nn.ReLU(),
-                # nn.MaxPool2d(kernel_size=1), #this layer is a pseudo duplicate I think, as the main model uses an avgpool to slap it all down.
-            )
+        
+        self.convolutions = nn.Sequential(
+            settings.dropout,
+            nn.Conv2d(self.in_channels, self.in_channels * self.expansion, kernel_size=7, stride=1, padding=4),
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=2),
+            # nn.AvgPool2d(kernel_size=2),
+            nn.Conv2d(self.in_channels * self.expansion, self.in_channels * self.expansion, kernel_size=5, stride=2, padding=1),
+            nn.ReLU(),
+            # nn.AvgPool2d(kernel_size=2),
+            nn.MaxPool2d(kernel_size=2),
+            nn.Conv2d(self.in_channels * self.expansion, self.in_channels * self.expansion, kernel_size=3, stride=1, padding=0),
+            nn.ReLU(),
+            # nn.MaxPool2d(kernel_size=1), #this layer is a pseudo duplicate I think, as the main model uses an avgpool to slap it all down.
+        )
+        # else: 
+        #     self.convolutions = nn.Sequential(
+        #         settings.dropout,
+        #         nn.Conv2d(self.in_channels, self.in_channels * self.expansion, kernel_size=3, stride=1, padding=0),
+        #         nn.ReLU(),
+        #         nn.MaxPool2d(kernel_size=2),
+        #         # nn.AvgPool2d(kernel_size=2),
+        #         nn.Conv2d(self.in_channels * self.expansion, self.in_channels * self.expansion, kernel_size=4, stride=1, padding=0),
+        #         nn.ReLU(),
+        #         # nn.AvgPool2d(kernel_size=2),
+        #         nn.MaxPool2d(kernel_size=2),
+        #         nn.Conv2d(self.in_channels * self.expansion, self.in_channels * self.expansion, kernel_size=5, stride=1, padding=0),
+        #         nn.ReLU(),
+        #         # nn.MaxPool2d(kernel_size=1), #this layer is a pseudo duplicate I think, as the main model uses an avgpool to slap it all down.
+        #     )
 
         activation_map_size = self._conv_test(self.input_size)
         logger.info(f"Aggregating activationmap with size {activation_map_size}")

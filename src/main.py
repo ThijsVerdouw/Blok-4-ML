@@ -62,7 +62,7 @@ def createTrainer(Data: object, model:object)-> object:
 # x, y = next(iter(trainstreamer))
 # print('input size = ' +str(x[1].shape))
 
-ExternalModel= NeuralNetworks.CNN(filters=32, units1=128, units2=128, input_size=(64, 1, 28, 28))
+ExternalModel= NeuralNetworks.CNN(filters=28*28, units1=256, units2=256, input_size=(64, 1, 28, 28))
 # ExternalModel = NeuralNetworks.LLN()
 Data = downloadData.downloadMnistData()
 trainer = createTrainer(Data, model=ExternalModel)
@@ -92,7 +92,7 @@ trainer.loop()
 
 # Convolutions Groot naar klein: goed! Klein naar groot:gaat van 82% naar 57%.
 
-
+# extra padding op de eerste laag geeft een accuracy verhoging van 5% (70% ->75%)
 
 
 
